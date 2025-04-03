@@ -252,7 +252,7 @@ document.addEventListener('keydown', (event) => {
 function sendGameResult(score) {
     const userId = window.userId;
 
-    fetch(`http://localhost:5000/send_result/${userId}`, {
+    fetch(`http://svoivpn.duckdns.org:443/result/${userId}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
