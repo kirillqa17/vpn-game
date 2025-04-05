@@ -257,7 +257,7 @@ function sendGameResult(score) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ score: score })
+        body: JSON.stringify(score)
     })
     .then(response => response.json())
     .then(data => {
