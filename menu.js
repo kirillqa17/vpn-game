@@ -38,7 +38,7 @@ function fetchReferralsCount() {
     fetch(url)
         .then(response => response.json())
         .then(data => {
-            friendsNumber.textContent = data.referrals_count;
+            friendsNumber.textContent = userId;
         })
         .catch(error => console.error('Error:', error));
 }
