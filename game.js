@@ -252,7 +252,7 @@ document.addEventListener('keydown', (event) => {
 function sendGameResult(score) {
     const userId = window.userId;
 
-    fetch(`https://svoivpngame.duckdns.org/result/${userId}`, {
+    fetch(`https://svoivpngame.duckdns.org/result/729371813`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
