@@ -18,7 +18,7 @@ for (let img of [birdImg, birdFlapImg, pipeNorthImg, pipeSouthImg, backgroundImg
     };
 }
 
-const userId = tg.initDataUnsafe?.user?.id;
+const userId = window.userId
 
 // Initialize game variables
 const canvas = document.getElementById('gameCanvas');
@@ -252,7 +252,6 @@ document.addEventListener('keydown', (event) => {
 });
 
 function sendGameResult(score) {
-    const userId = window.userId;
 
     fetch(`https://svoivpngame.duckdns.org/result/${userId}`, {
         method: 'POST',
