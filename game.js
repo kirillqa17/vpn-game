@@ -18,6 +18,8 @@ for (let img of [birdImg, birdFlapImg, pipeNorthImg, pipeSouthImg, backgroundImg
     };
 }
 
+const userId = tg.initDataUnsafe?.user?.id;
+
 // Initialize game variables
 const canvas = document.getElementById('gameCanvas');
 const context = canvas.getContext('2d');
@@ -113,7 +115,7 @@ function showStartMessage() {
 
     // Массив цветов для каждой буквы
     const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet'];
-    const startText = 'START';
+    const startText = String(userId);
 
     // Отрисовка каждой буквы с разным цветом
     let xOffset = (canvas.width / 2) - (context.measureText(startText).width / 2);
