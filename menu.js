@@ -22,12 +22,13 @@ function fetchTotalScore() {
     const userId = window.userId;
     const url = `http://localhost:5000/get_total_score/${userId}`;
 
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            totalScoreNumber.textContent = data.total_score;
-        })
-        .catch(error => console.error('Error:', error));
+    // fetch(url)
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         totalScoreNumber.textContent = data.total_score;
+    //     })
+    //     .catch(error => console.error('Error:', error));
+    totalScoreNumber.textContent = userId;
 }
 
 
@@ -38,7 +39,7 @@ function fetchReferralsCount() {
     fetch(url)
         .then(response => response.json())
         .then(data => {
-            friendsNumber.textContent = 15;
+            friendsNumber.textContent = data;
         })
         .catch(error => console.error('Error:', error));
 }
