@@ -115,7 +115,7 @@ function showStartMessage() {
 
     // Массив цветов для каждой буквы
     const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet'];
-    const startText = String(userId);
+    const startText = 'START';
 
     // Отрисовка каждой буквы с разным цветом
     let xOffset = (canvas.width / 2) - (context.measureText(startText).width / 2);
@@ -210,7 +210,7 @@ function triggerGameOver() {
 }
 
 function gameOver() {
-    messageDiv.textContent = "Вы проиграли.\nВаш счет: " + score;
+    messageDiv.textContent = `Вы ${userId} проиграли.\nВаш счет: ` + score;
     messageDiv.style.display = "block";
     buttonContainer.style.display = "block";
     scoreBackground.style.display = "none";
