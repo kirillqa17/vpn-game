@@ -18,7 +18,9 @@ for (let img of [birdImg, birdFlapImg, pipeNorthImg, pipeSouthImg, backgroundImg
     };
 }
 
-const userId = window.userId
+const urlParams = new URLSearchParams(window.location.search);
+const userId = urlParams.get('userId') || 'anonymous';
+
 
 // Initialize game variables
 const canvas = document.getElementById('gameCanvas');
@@ -239,17 +241,12 @@ restartButton.addEventListener('click', resetGame);
 canvas.addEventListener('click', () => {
     if (gameStarted) {
         bird.velocity = bird.lift;
-    }
-});
-
-document.addEventListener('keydown', (event) => {
-    if (event.code === 'Space' && gameStarted) {
-        bird.velocity = bird.lift;
         birdFlap = true;
         setTimeout(() => birdFlap = false, 100);
         smokes.push({ x: bird.x, y: bird.y, vx: 1, vy: bird.velocity, opacity: 1.0 });
     }
 });
+
 
 function sendGameResult(score) {
 
