@@ -70,6 +70,8 @@ body, html {
     background-color: rgba(0, 0, 0, 0.8);
     padding: 20px;
     border-radius: 10px;
+    width: auto; /* Ширина таблички зависит от текста */
+    max-width: 350px; /* Максимальная ширина таблички */
 }
 
 #buttonContainer {
@@ -80,12 +82,12 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
-    max-width: 400px; /* Ограничиваем ширину контейнера */
+    width: auto;
+    max-width: 400px; /* Ограничиваем максимальную ширину кнопок */
 }
 
 button {
-    width: 100%; /* Кнопки на всю ширину */
+    width: auto; /* Ширина кнопки будет зависеть от контента */
     max-width: 350px; /* Максимальная ширина кнопок */
     padding: 15px 0;
     font-size: 18px;
@@ -98,6 +100,10 @@ button {
     margin: 10px 0; /* Отступы между кнопками */
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#restartButton {
+    margin-top: 30px; /* Увеличиваем отступ сверху */
 }
 
 button:hover {
