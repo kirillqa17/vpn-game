@@ -43,8 +43,12 @@ const bird = {
     width: 64,
     height: 54,
     gravity: 1100,
-    lift: -400,
-    velocity: 0
+    lift: -300,
+    velocity: 0,
+    hitboxOffsetX: 10,
+    hitboxOffsetY: 16,
+    hitboxWidth: 44,  // width - 2 * hitboxOffsetX
+    hitboxHeight: 16 // height - 2 * hitboxOffsetY
 };
 
 const pipes = [];
@@ -126,16 +130,20 @@ function draw(timestamp) {
     if (backgroundX <= -canvas.width) backgroundX = 0;
 
     context.drawImage(backgroundImg, backgroundX, 0, canvas.width, canvas.height);
-    context.drawImage(backgroundImg, backgroundX + canvas.width, 0, canvas.width, canvas.height);
+    context.drawImage(backgroundImg, backgroundX + canvas.width - 2, 0, canvas.width, canvas.height);
 
     bird.velocity += bird.gravity * deltaTime;
     bird.y += bird.velocity * deltaTime;
 
     context.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
 
+    
+ 
+
+
     if (bird.y + bird.height > canvas.height || bird.y < 0) {
-    triggerGameOver();
-    return;
+        triggerGameOver();
+        return;
     }
 
     if (frame % 250 === 0) {
@@ -146,34 +154,46 @@ function draw(timestamp) {
     for (let i = 0; i < pipes.length; i++) {
     pipes[i].x -= 200 * deltaTime;
 
-    if (pipes[i].x + pipeWidth < 0) {
-        pipes.splice(i, 1);
-        score++;
-        scoreSpan.textContent = score;
-    }
+        if (pipes[i].x + pipeWidth < 0) {
+            pipes.splice(i, 1);
+            score++;
+            scoreSpan.textContent = score;
+        }
 
-    context.drawImage(pipeNorthImg, pipes[i].x, pipes[i].y, pipeWidth, canvas.height);
-    context.drawImage(pipeSouthImg, pipes[i].x, pipes[i].y + canvas.height + gap, pipeWidth, canvas.height);
+        context.drawImage(pipeNorthImg, pipes[i].x, pipes[i].y, pipeWidth, canvas.height);
+        context.drawImage(pipeSouthImg, pipes[i].x, pipes[i].y + canvas.height + gap, pipeWidth, canvas.height);
 
-    if (
-        bird.x + bird.width > pipes[i].x &&
-        bird.x < pipes[i].x + pipeWidth &&
-        (bird.y < pipes[i].y + canvas.height || bird.y + bird.height > pipes[i].y + canvas.height + gap)
-    ) {
-        triggerGameOver();
-        return;
-    }
+        const bx = bird.x + bird.hitboxOffsetX;
+        const by = bird.y + bird.hitboxOffsetY;
+        const bw = bird.hitboxWidth;
+        const bh = bird.hitboxHeight;
+
+        // Хитбоксы
+        // context.strokeStyle = 'red';
+        // context.lineWidth = 2;
+        // context.strokeRect(pipes[i].x, pipes[i].y, pipeWidth, canvas.height);
+        // context.strokeRect(pipes[i].x, pipes[i].y + canvas.height + gap, pipeWidth, canvas.height);
+        // context.strokeRect(bx, by, bw, bh);
+
+        if (
+            bx + bw > pipes[i].x &&
+            bx < pipes[i].x + pipeWidth &&
+            (by < pipes[i].y + canvas.height || by + bh > pipes[i].y + canvas.height + gap)
+        ) {
+            triggerGameOver();
+            return;
+        }
     }
 
     for (let i = 0; i < smokes.length; i++) {
-    context.globalAlpha = smokes[i].opacity;
-    context.drawImage(smokeImg, smokes[i].x, smokes[i].y, 50, 50);
-    smokes[i].x -= smokes[i].vx * deltaTime * 60;
-    smokes[i].y -= smokes[i].vy * deltaTime * 60;
-    smokes[i].opacity -= 0.01 * deltaTime * 60;
-    if (smokes[i].opacity <= 0) {
-        smokes.splice(i, 1);
-    }
+        context.globalAlpha = smokes[i].opacity;
+        context.drawImage(smokeImg, smokes[i].x, smokes[i].y, 50, 50);
+        smokes[i].x -= smokes[i].vx * deltaTime * 60;
+        smokes[i].y -= smokes[i].vy * deltaTime * 60;
+        smokes[i].opacity -= 0.01 * deltaTime * 60;
+        if (smokes[i].opacity <= 0) {
+            smokes.splice(i, 1);
+        }
     }
 
     context.globalAlpha = 1.0;
