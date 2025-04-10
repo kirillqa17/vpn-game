@@ -50,10 +50,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 playButton.addEventListener('click', () => {
-    if (!userId) {
-        alert('Ошибка: ID пользователя не найден');
-        return;
-    }
+    // if (!userId) {
+    //     alert('Ошибка: ID пользователя не найден');
+    //     return;
+    // }
     window.location.href = `game.html?userId=${userId}`;
 });
 
