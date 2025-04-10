@@ -222,7 +222,7 @@ function triggerGameOver() {
 }
 
 function gameOver() {
-    messageDiv.textContent = `Вы проиграли.\nВаш счет: ${score}`;
+    messageDiv.textContent = `Вы проиграли.\nВаш счёт: ${score}`;
     messageDiv.style.display = 'block';
     buttonContainer.style.display = 'block';
     scoreBackground.style.display = 'none';
