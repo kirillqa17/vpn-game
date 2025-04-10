@@ -7,8 +7,8 @@ const smokeImg = new Image();
 
 birdImg.src = 'images/plane1.png';
 birdFlapImg.src = 'images/ptica_flap.png';
-pipeNorthImg.src = 'images/skyscraper1_n.jpg';
-pipeSouthImg.src = 'images/skyscraper1.jpg';
+pipeNorthImg.src = 'images/skyscraper1_n.png';
+pipeSouthImg.src = 'images/skyscraper1.png';
 backgroundImg.src = 'images/background.png';
 smokeImg.src = 'images/smoke.png';
 
