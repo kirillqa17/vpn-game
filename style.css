@@ -80,21 +80,27 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+    max-width: 400px; /* Ограничиваем ширину контейнера */
 }
 
-#restartButton, #menuButton {
-    margin: 10px 0; /* Отступ между кнопками */
-    padding: 10px 20px;
+button {
+    width: 100%; /* Кнопки на всю ширину */
+    max-width: 350px; /* Максимальная ширина кнопок */
+    padding: 15px 0;
     font-size: 18px;
     background-color: rgba(0, 0, 0, 0.8);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
+    margin: 10px 0; /* Отступы между кнопками */
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-#restartButton:hover, #menuButton:hover {
+button:hover {
     background-color: grey;
     color: white;
 }
@@ -109,4 +115,36 @@ body, html {
     border-radius: 5px;
     font-size: 18px;
     display: none;
+}
+
+#loadingScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loader {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

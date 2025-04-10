@@ -17,6 +17,7 @@ for (let img of images) {
     img.onload = () => {
         loadedImages++;
         if (loadedImages === images.length) {
+            document.getElementById('loadingScreen').style.display = 'none';
             startGame();
         }
     };

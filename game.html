@@ -2,13 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flappy Bird Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="style.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="game.js" defer></script>
 </head>
 <body>
+    <div id="loadingScreen">
+        <div class="loader"></div>
+        <p>Загрузка...</p>
+    </div>
     <div id="gameContainer">
         <canvas id="gameCanvas"></canvas>
         <div id="message">Вы проиграли. Ваш счет: 0</div>
