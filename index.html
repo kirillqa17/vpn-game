@@ -9,9 +9,26 @@
 </head> 
 <body>
     <div id="menu">
-        <h1 id="totalScore">Total Score: <span id="score_total"></span></h1>
-        <h1 id="friendsInvited">Friends Invited: <span id="friends_total"></span></h1>
-        <button id="playButton">Play</button>
+        <div id="home" class="menu-section">
+            <h1 id="totalScore">Total Score: <span id="score_total"></span></h1>
+            <h1 id="friendsInvited">Friends Invited: <span id="friends_total"></span></h1>
+            <button id="playButton">Play</button>
+        </div>
+        
+        <div id="exchange" class="menu-section hidden">
+            <button id="exchangeButton">Обменять</button>
+        </div>
+
+        <div id="skins" class="menu-section hidden">
+            <h2>Coming soon</h2>
+        </div>
+        
+        <!-- Horizontal Bottom Menu -->
+        <div id="bottomMenu" class="bottom-nav">
+            <button class="menu-nav" data-target="home">Home</button>
+            <button class="menu-nav" data-target="exchange">Exchange</button>
+            <button class="menu-nav" data-target="skins">Skins</button>
+        </div>
     </div>
 </body>
 </html>

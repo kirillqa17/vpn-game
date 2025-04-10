@@ -31,6 +31,23 @@ function fetchTotalScore() {
     totalScoreNumber.textContent = userId;
 }
 
+function showPage(targetId) {
+    const sections = document.querySelectorAll('.menu-section');
+    sections.forEach(section => {
+        if (section.id === targetId) {
+            section.classList.remove('hidden');
+        } else {
+            section.classList.add('hidden');
+        }
+    });
+}
+
+document.querySelectorAll('.menu-nav').forEach(button => {
+    button.addEventListener('click', (event) => {
+        const target = event.target.getAttribute('data-target');
+        showPage(target);
+    });
+});
 
 function fetchReferralsCount() {
     const userId = window.userId;
