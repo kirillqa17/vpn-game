@@ -6,10 +6,10 @@ const userId = tg.initDataUnsafe?.user?.id;
 
 window.userId = userId;
 
-if (!userId) {
-    console.error('User ID is missing.');
-    alert('User ID is missing.');
-}
+// if (!userId) {
+//     console.error('User ID is missing.');
+//     alert('User ID is missing.');
+// }
 
 const menu = document.getElementById('menu');
 const playButton = document.getElementById('playButton');
