@@ -10,9 +10,18 @@ pipeSouthImg.src = 'images/skyscraper1.png';
 backgroundImg.src = 'images/background.png';
 smokeImg.src = 'images/smoke.png';
 
-for (let img of [birdImg, pipeNorthImg, pipeSouthImg, backgroundImg, smokeImg]) {
+const images = [birdImg, pipeNorthImg, pipeSouthImg, backgroundImg, smokeImg];
+let loadedImages = 0;
+
+for (let img of images) {
+    img.onload = () => {
+        loadedImages++;
+        if (loadedImages === images.length) {
+            startGame();
+        }
+    };
     img.onerror = () => {
-    console.error(`Failed to load image: ${img.src}`);
+        console.error(`Failed to load image: ${img.src}`);
     };
 }
 
@@ -43,12 +52,12 @@ const bird = {
     width: 64,
     height: 54,
     gravity: 1100,
-    lift: -300,
+    lift: -350,
     velocity: 0,
     hitboxOffsetX: 10,
     hitboxOffsetY: 16,
-    hitboxWidth: 44,  // width - 2 * hitboxOffsetX
-    hitboxHeight: 16 // height - 2 * hitboxOffsetY
+    hitboxWidth: 44,
+    hitboxHeight: 16
 };
 
 const pipes = [];
@@ -61,6 +70,9 @@ let score = 0;
 let gameStarted = false;
 let backgroundX = 0;
 let lastTime = 0;
+
+let lastPipeTime = 0;
+const pipeInterval = 2;
 
 const backgroundSpeed = 100;
 
@@ -138,17 +150,16 @@ function draw(timestamp) {
     context.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
 
     
- 
-
-
     if (bird.y + bird.height > canvas.height || bird.y < 0) {
         triggerGameOver();
         return;
     }
 
-    if (frame % 250 === 0) {
-    let pipeY = Math.random() * (canvas.height - gap - 200) - canvas.height;
-    pipes.push({ x: canvas.width, y: pipeY });
+    lastPipeTime += deltaTime;
+    if (lastPipeTime >= pipeInterval) {
+        let pipeY = Math.random() * (canvas.height - gap - 200) - canvas.height;
+        pipes.push({ x: canvas.width, y: pipeY });
+        lastPipeTime = 0;
     }
 
     for (let i = 0; i < pipes.length; i++) {
@@ -249,4 +260,3 @@ function sendGameResult(score) {
     .catch(error => console.error('Send error:', error));
 }
 
-startGame();
