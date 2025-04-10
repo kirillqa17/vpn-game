@@ -5,11 +5,11 @@ const pipeSouthImg = new Image();
 const backgroundImg = new Image();
 const smokeImg = new Image();
 
-birdImg.src = 'images/ptica.png';
+birdImg.src = 'images/plane1.png';
 birdFlapImg.src = 'images/ptica_flap.png';
-pipeNorthImg.src = 'images/tryba_vniz.jpg';
-pipeSouthImg.src = 'images/tryba_vverh.jpg';
-backgroundImg.src = 'images/fon.png';
+pipeNorthImg.src = 'images/skyscraper1_n.jpg';
+pipeSouthImg.src = 'images/skyscraper1.jpg';
+backgroundImg.src = 'images/background.png';
 smokeImg.src = 'images/smoke.png';
 
 for (let img of [birdImg, birdFlapImg, pipeNorthImg, pipeSouthImg, backgroundImg, smokeImg]) {
