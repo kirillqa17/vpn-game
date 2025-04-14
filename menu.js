@@ -3,7 +3,7 @@ Telegram.WebApp.expand();
 
 const tg = window.Telegram.WebApp;
 const userId = tg.initDataUnsafe?.user?.id;
-const tg_username = tg.initDataUnsafe?.username;
+const tg_username = tg.initDataUnsafe?.user?.username
 
 window.userId = userId;
 window.username = tg_username;
@@ -84,7 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchTotalScore();
     fetchReferralsCount();
 
-    const username = tg_username;
+    const username = tg_username || 'Guest';
+
     const canisterCount = 10; 
     const coinCount = 500; 
 
