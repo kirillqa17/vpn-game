@@ -6,10 +6,6 @@ const userId = tg.initDataUnsafe?.user?.id;
 
 window.userId = userId;
 
-// if (!userId) {
-//     console.error('User ID is missing.');
-//     alert('User ID is missing.');
-// }
 
 const menu = document.getElementById('menu');
 const playButton = document.getElementById('playButton');
@@ -35,9 +31,9 @@ function showPage(targetId) {
     const sections = document.querySelectorAll('.menu-section');
     sections.forEach(section => {
         if (section.id === targetId) {
-            section.classList.remove('hidden');
+            section.classList.remove('hidden');  // Показываем нужную страницу
         } else {
-            section.classList.add('hidden');
+            section.classList.add('hidden');  // Скрываем остальные страницы
         }
     });
 }
@@ -62,6 +58,7 @@ function fetchReferralsCount() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    showPage('home');
     fetchTotalScore();
     fetchReferralsCount();
 });

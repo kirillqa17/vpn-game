@@ -107,6 +107,10 @@ button:hover {
     background-color: grey;
 }
 
+.hidden {
+    display: none; 
+}
+
 #scoreBackground {
     position: absolute;
     top: 10px;
