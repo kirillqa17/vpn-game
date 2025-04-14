@@ -61,6 +61,15 @@ document.addEventListener('DOMContentLoaded', () => {
     showPage('home');
     fetchTotalScore();
     fetchReferralsCount();
+
+    const username = "PlayerName";
+    const canisterCount = 10; 
+    const coinCount = 500; 
+
+    document.getElementById('username').textContent = username;
+
+    document.getElementById('canisterCount').textContent = canisterCount;
+    document.getElementById('coinCount').textContent = coinCount;
 });
 
 playButton.addEventListener('click', () => {
