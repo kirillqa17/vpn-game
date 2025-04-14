@@ -5,9 +5,8 @@ const tg = window.Telegram.WebApp;
 const userId = tg.initDataUnsafe?.user?.id;
 const tg_username = tg.initDataUnsafe?.username;
 
-
 window.userId = userId;
-
+window.username = tg_username;
 
 const menu = document.getElementById('menu');
 const playButton = document.getElementById('playButton');
@@ -15,6 +14,8 @@ const totalScoreElement = document.getElementById('totalScore');
 const totalScoreNumber = document.getElementById('score_total');
 const friendsElement = document.getElementById('friendsInvited');
 const friendsNumber = document.getElementById('friends_total');
+const coinImg = new Image();
+const canisterImg = new Image();
 
 coinImg.src = 'images/kanistra.png';
 canisterImg.src = 'images/monetka.png';
