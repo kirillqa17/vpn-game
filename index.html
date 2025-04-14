@@ -2,12 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="style.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="menu.js" defer></script>
 </head> 
 <body>
+    <div id="loadingScreen">
+        <div class="loader"></div>
+    </div>
     <div id="menu">
         <div id="topBar" class="top-bar">
             <span id="username" class="username">Username</span>
@@ -18,7 +21,7 @@
                 <span id="coinCount">0</span>
             </div>
         </div>
-        
+
         <div id="home" class="menu-section">
             <h1 id="totalScore">Total Score: <span id="score_total"></span></h1>
             <button id="playButton">Play</button>

@@ -14,6 +14,22 @@ const totalScoreNumber = document.getElementById('score_total');
 const friendsElement = document.getElementById('friendsInvited');
 const friendsNumber = document.getElementById('friends_total');
 
+const images = [coinImg, canisterImg];
+let loadedImages = 0;
+
+for (let img of images) {
+    img.onload = () => {
+        loadedImages++;
+        if (loadedImages === images.length) {
+            document.getElementById('loadingScreen').style.display = 'none';
+            document.getElementById('menu').style.display = 'block';
+        }
+    };
+    img.onerror = () => {
+        console.error(`Failed to load image: ${img.src}`);
+    };
+}
+
 function fetchTotalScore() {
     const userId = window.userId;
     const url = `http://localhost:5000/get_total_score/${userId}`;
