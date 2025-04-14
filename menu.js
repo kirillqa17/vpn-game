@@ -14,6 +14,9 @@ const totalScoreNumber = document.getElementById('score_total');
 const friendsElement = document.getElementById('friendsInvited');
 const friendsNumber = document.getElementById('friends_total');
 
+coinImg.src = 'images/kanistra.png';
+canisterImg.src = 'images/monetka.png';
+
 const images = [coinImg, canisterImg];
 let loadedImages = 0;
 
