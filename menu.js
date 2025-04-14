@@ -4,9 +4,7 @@ Telegram.WebApp.expand();
 const tg = window.Telegram.WebApp;
 const userId = tg.initDataUnsafe?.user?.id;
 const tg_username = tg.initDataUnsafe?.user?.username;
-if (!tg_username) {
-   tg_username = tg.tg.initDataUnsafe?.user?.first_name;
-}
+
 
 window.userId = userId;
 window.username = tg_username;
