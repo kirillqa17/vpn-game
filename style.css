@@ -209,7 +209,14 @@ button:hover {
     }
     
     .game-preview {
-        width: 95%;
+        height: 150px;
+        border-radius: 12px;
+    }
+    
+    .play-overlay-button {
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
     }
 }
 
@@ -279,25 +286,34 @@ button:hover {
     overflow: hidden;
 }
 
+/* Контейнер для превью игры */
+.game-preview-container {
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
 /* Стили для превью игры */
 .game-preview {
     position: relative;
-    width: 90%;
-    max-width: 500px;
-    margin: 20px auto;
-    border-radius: 35px;
+    width: 100%;
+    height: 180px; /* Фиксированная высота */
+    border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .game-screenshot {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
-    border-radius: 35px;
-    transition: transform 0.3s;
+    transition: opacity 0.3s;
 }
 
-/* Виньетка по бокам */
+/* Виньетка */
 .vignette {
     position: absolute;
     top: 0;
@@ -307,37 +323,40 @@ button:hover {
     background: radial-gradient(
         ellipse at center,
         rgba(0,0,0,0) 0%,
-        rgba(0,0,0,0.7) 100%
+        rgba(0,0,0,0.6) 100%
     );
     pointer-events: none;
-    border-radius: 34px;
 }
 
-/* Стили для кнопки поверх скриншота */
+/* Кнопка игры */
 .play-overlay-button {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 15px 40px;
-    font-size: 24px;
+    right: 15px;
+    bottom: 15px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
     background: rgba(255, 255, 255, 0.9);
     color: #000;
     border: none;
-    border-radius: 50px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s;
     z-index: 2;
+    padding: 0;
+    border: 2px solid white;
 }
 
-.play-overlay-button:hover {
+.play-overlay-button:active {
+    transform: scale(0.95);
     background: white;
-    transform: translate(-50%, -50%) scale(1.05);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
-/* Эффект при наведении на весь блок */
-.game-preview:hover .game-screenshot {
-    transform: scale(2);
+/* Эффект при касании на телефоне */
+.game-preview:active .game-screenshot {
+    opacity: 0.9;
 }
