@@ -202,6 +202,15 @@ button:hover {
         font-size: 14px; /* Еще больше уменьшаем шрифт */
         padding: 8px 10px; /* Уменьшаем отступы на мобильных */
     }
+
+    .play-overlay-button {
+        padding: 12px 30px;
+        font-size: 20px;
+    }
+    
+    .game-preview {
+        width: 95%;
+    }
 }
 
 /* Медиазапросы для планшетов */
@@ -270,3 +279,65 @@ button:hover {
     overflow: hidden;
 }
 
+/* Стили для превью игры */
+.game-preview {
+    position: relative;
+    width: 90%;
+    max-width: 500px;
+    margin: 20px auto;
+    border-radius: 35px;
+    overflow: hidden;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.game-screenshot {
+    width: 100%;
+    display: block;
+    border-radius: 35px;
+    transition: transform 0.3s;
+}
+
+/* Виньетка по бокам */
+.vignette {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+        ellipse at center,
+        rgba(0,0,0,0) 0%,
+        rgba(0,0,0,0.7) 100%
+    );
+    pointer-events: none;
+    border-radius: 34px;
+}
+
+/* Стили для кнопки поверх скриншота */
+.play-overlay-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 15px 40px;
+    font-size: 24px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #000;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s;
+    z-index: 2;
+}
+
+.play-overlay-button:hover {
+    background: white;
+    transform: translate(-50%, -50%) scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Эффект при наведении на весь блок */
+.game-preview:hover .game-screenshot {
+    transform: scale(2);
+}
