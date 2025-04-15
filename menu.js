@@ -53,20 +53,10 @@ function fetchTotalScore() {
 function showPage(targetId) {
     const sections = document.querySelectorAll('.menu-section');
     sections.forEach(section => {
-        if (section.id === targetId) {
-            section.classList.remove('hidden');  // Показываем нужную страницу
-        } else {
-            section.classList.add('hidden');  // Скрываем остальные страницы
-        }
+        section.classList.toggle('hidden', section.id !== targetId);
     });
 }
 
-document.querySelectorAll('.menu-nav').forEach(button => {
-    button.addEventListener('click', (event) => {
-        const target = event.target.getAttribute('data-target');
-        showPage(target);
-    });
-});
 
 function fetchReferralsCount() {
     const userId = window.userId;
@@ -81,19 +71,21 @@ function fetchReferralsCount() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    showPage('home');
-    fetchTotalScore();
-    fetchReferralsCount();
-
     const username = tg_username || 'Guest';
 
     const canisterCount = 10; 
     const coinCount = 500; 
 
     document.getElementById('username').textContent = username;
-
     document.getElementById('canisterCount').textContent = canisterCount;
     document.getElementById('coinCount').textContent = coinCount;
+
+    document.querySelectorAll('.menu-nav').forEach(button => {
+        button.addEventListener('click', (event) => {
+            const target = event.target.getAttribute('data-target');
+            showPage(target);
+        });
+    });
 });
 
 playButton.addEventListener('click', () => {
