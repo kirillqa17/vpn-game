@@ -34,7 +34,7 @@ body, html {
 }
 
 #message {
-    display: block;
+    display: flex;
     text-align: center;
     color: white;
     font-size: 24px;
@@ -48,6 +48,11 @@ body, html {
     border-radius: 10px;
     width: 90%; /* Ширина таблички теперь адаптируется к экрану */
     max-width: 350px; /* Максимальная ширина таблички */
+}
+
+#score-container {
+    display: flex;
+    text-align: center;
 }
 
 #buttonContainer {
@@ -121,12 +126,20 @@ button:hover {
     position: absolute;
     top: 10px;
     right: 10px;
+    display: flex;
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
     padding: 10px;
     border-radius: 5px;
-    font-size: 18px;
-    display: none;
+    font-size: 22px;
+    box-sizing: border-box; /* Учет паддингов */
+}
+
+.coinIcon {
+    position: relative;
+    top: 2px;
+    width: 20px;
+    height: 20px;
 }
 
 #loadingScreen {

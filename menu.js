@@ -18,8 +18,8 @@ const friendsNumber = document.getElementById('friends_total');
 const coinImg = new Image();
 const canisterImg = new Image();
 
-coinImg.src = 'images/kanistra.png';
-canisterImg.src = 'images/monetka.png';
+coinImg.src = 'images/monetka.png';
+canisterImg.src = 'images/kanistra.png';
 
 const images = [coinImg, canisterImg];
 let loadedImages = 0;

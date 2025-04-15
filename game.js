@@ -3,14 +3,18 @@ const pipeNorthImg = new Image();
 const pipeSouthImg = new Image();
 const backgroundImg = new Image();
 const smokeImg = new Image();
+const coinImg = new Image();
+
 
 birdImg.src = 'images/plane1.png';
 pipeNorthImg.src = 'images/skyscraper1_n.png';
 pipeSouthImg.src = 'images/skyscraper1.png';
 backgroundImg.src = 'images/background.png';
 smokeImg.src = 'images/smoke.png';
+coinImg.src = 'images/monetka.png';
 
-const images = [birdImg, pipeNorthImg, pipeSouthImg, backgroundImg, smokeImg];
+
+const images = [birdImg, pipeNorthImg, pipeSouthImg, backgroundImg, smokeImg, coinImg];
 let loadedImages = 0;
 
 for (let img of images) {
@@ -38,6 +42,7 @@ const scoreBackground = document.getElementById('scoreBackground');
 const scoreSpan = document.getElementById('score');
 const gameContainer = document.getElementById('gameContainer');
 const buttonContainer = document.getElementById('buttonContainer');
+const scoreContainer = document.getElementById('scoreContainer');
 
 function resizeCanvas() {
     canvas.width = window.innerWidth;
@@ -222,10 +227,10 @@ function triggerGameOver() {
 }
 
 function gameOver() {
-    messageDiv.textContent = `Вы проиграли.\nВаш счёт: ${score}`;
+    scoreContainer.innerHTML = `Вы проиграли<br>Ваш счёт: ${score} <img src="images/monetka.png" class="coinIcon" alt="Monetka" />`;
     messageDiv.style.display = 'block';
     buttonContainer.style.display = 'block';
-    scoreBackground.style.display = 'none';
+    scoreBackground.style.display = 'block';
 }
 
 function resetGame() {
