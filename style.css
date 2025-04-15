@@ -317,6 +317,7 @@ button:hover {
     height: 100%;
     object-fit: cover;
     display: block;
+    object-position: center;
 }
 
 /* Усиленная виньетка */
@@ -333,6 +334,7 @@ button:hover {
     );
     pointer-events: none;
 }
+
 
 /* Кнопка игры - непрозрачная и с центрированным треугольником */
 .play-overlay-button {
