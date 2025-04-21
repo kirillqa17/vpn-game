@@ -2,8 +2,9 @@ const menu = document.getElementById('menu');
 const playButton = document.getElementById('playButton');
 const totalScoreElement = document.getElementById('totalScore');
 const totalScoreNumber = document.getElementById('score_total');
-const friendsElement = document.getElementById('friendsInvited');
-const friendsNumber = document.getElementById('friends_total');
+const canisterCountElement = document.getElementById('canisterCount');
+const coinCountElement = document.getElementById('coinCount');
+const claimButton = document.getElementById('claimButton');
 const coinImg = new Image();
 const canisterImg = new Image();
 
