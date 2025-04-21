@@ -90,7 +90,7 @@ function initializeClaimButton() {
 
 async function checkClaimStatus() {
     try {
-        const response = await fetch(`https://svoivpn.duckdns.org/attempts/${window.userId}`);
+        const response = await fetch(`https://svoivpn.duckdns.org/claim/${window.userId}`);
         const data = await response.json();
         
         if (data.next_claim_time) {
@@ -106,7 +106,7 @@ async function checkClaimStatus() {
                 resetClaimButton();
             }
         } else {
-            // Если нет данных о следующем клейме
+            // Если нет данных о следующем клейме (первый раз)
             resetClaimButton();
         }
     } catch (error) {
@@ -121,7 +121,7 @@ async function handleClaimClick() {
     try {
         claimButton.classList.add('active');
         
-        // Отправляем запрос на сервер
+        // Отправляем запрос на сервер для обновления времени клейма
         const response = await fetch(`https://svoivpn.duckdns.org/claim/${window.userId}`, {
             method: 'POST'
         });
@@ -132,7 +132,7 @@ async function handleClaimClick() {
             const attemptsResponse = await fetch(`https://svoivpn.duckdns.org/attempts/${window.userId}/add`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(2)
+                body: JSON.stringify(2) // Добавляем 2 попытки
             });
             const attemptsData = await attemptsResponse.json();
             
@@ -157,6 +157,10 @@ async function handleClaimClick() {
 
 
 function startCooldown(duration) {
+    if (duration <= 0) {
+        resetClaimButton();
+        return;
+    }
     claimButton.classList.add('disabled');
     const progressCircle = claimButton.querySelector('.progress-circle');
     const timeRemaining = claimButton.querySelector('.time-remaining');
