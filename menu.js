@@ -81,47 +81,54 @@ window.userId = userId;
 window.username = tg_username;
 
 loadUserData();
+initializeClaimButton();
 
 function initializeClaimButton() {
-    // Check if there's an active cooldown in localStorage
-    const claimData = localStorage.getItem('claimData');
-    let lastClaimTime = 0;
-    let cooldownEndTime = 0;
-    
-    if (claimData) {
-        const data = JSON.parse(claimData);
-        lastClaimTime = data.lastClaimTime || 0;
-        cooldownEndTime = data.cooldownEndTime || 0;
-    }
-    
-    const now = Date.now();
-    const cooldownDuration = 10 * 60 * 60 * 1000; // 10 hours in milliseconds
-    
-    if (now < cooldownEndTime) {
-        // Cooldown is active
-        const remainingTime = cooldownEndTime - now;
-        startCooldown(remainingTime);
-    } else {
-        // Ready to claim
-        claimButton.classList.remove('disabled');
-        claimButton.querySelector('.progress-bar').style.width = '0%';
-    }
-    
+    checkClaimStatus();
     claimButton.addEventListener('click', handleClaimClick);
+}
+
+async function checkClaimStatus() {
+    try {
+        const response = await fetch(`https://svoivpn.duckdns.org/attempts/${window.userId}`);
+        const data = await response.json();
+        
+        if (data.next_claim_time) {
+            const nextClaimTime = new Date(data.next_claim_time);
+            const now = new Date();
+            
+            if (now < nextClaimTime) {
+                // Кнопка на кулдауне
+                const remainingTime = nextClaimTime - now;
+                startCooldown(remainingTime);
+            } else {
+                // Кнопка готова к клейму
+                resetClaimButton();
+            }
+        } else {
+            // Если нет данных о следующем клейме
+            resetClaimButton();
+        }
+    } catch (error) {
+        console.error('Error checking claim status:', error);
+        resetClaimButton();
+    }
 }
 
 async function handleClaimClick() {
     if (claimButton.classList.contains('disabled')) return;
     
     try {
-        // Обновляем время claim на сервере
-        const claimResponse = await fetch(`https://svoivpn.duckdns.org/claim/${window.userId}`, {
+        claimButton.classList.add('active');
+        
+        // Отправляем запрос на сервер
+        const response = await fetch(`https://svoivpn.duckdns.org/claim/${window.userId}`, {
             method: 'POST'
         });
-        const claimData = await claimResponse.json();
+        const data = await response.json();
         
-        if (claimData.next_claim_time) {
-            // Добавляем 2 попытки
+        if (data.next_claim_time) {
+            // Обновляем попытки
             const attemptsResponse = await fetch(`https://svoivpn.duckdns.org/attempts/${window.userId}/add`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -132,50 +139,56 @@ async function handleClaimClick() {
             if (attemptsData.attempts !== undefined) {
                 canisterCountElement.textContent = attemptsData.attempts;
                 
-                // Визуальные эффекты
-                claimButton.classList.add('active');
-                setTimeout(() => {
-                    claimButton.classList.remove('active');
-                }, 2000);
-                
-                // Запускаем таймер
+                // Запускаем кулдаун
+                const nextClaimTime = new Date(data.next_claim_time);
                 const now = new Date();
-                const nextClaimTime = new Date(claimData.next_claim_time);
                 const cooldownDuration = nextClaimTime - now;
                 startCooldown(cooldownDuration);
             }
         }
     } catch (error) {
-        console.error('Error claiming rewards:', error);
+        console.error('Claim error:', error);
+    } finally {
+        setTimeout(() => {
+            claimButton.classList.remove('active');
+        }, 2000);
     }
 }
+
+
 function startCooldown(duration) {
     claimButton.classList.add('disabled');
-    const progressBar = claimButton.querySelector('.progress-bar');
+    const progressCircle = claimButton.querySelector('.progress-circle');
+    const timeRemaining = claimButton.querySelector('.time-remaining');
     const startTime = Date.now();
     const endTime = startTime + duration;
     
-    progressBar.style.width = '100%';
-    progressBar.style.transition = `width ${duration}ms linear`;
-    
-    setTimeout(() => {
-        progressBar.style.width = '0%';
-        progressBar.style.transition = 'none';
-        claimButton.classList.remove('disabled');
-    }, duration);
-    
-    // Update progress every second for smoother UI
+    // Обновляем отображение каждую секунду
     const interval = setInterval(() => {
         const now = Date.now();
-        if (now >= endTime) {
+        const remaining = endTime - now;
+        
+        if (remaining <= 0) {
             clearInterval(interval);
+            resetClaimButton();
             return;
         }
         
-        const elapsed = now - startTime;
-        const progress = (elapsed / duration) * 100;
-        progressBar.style.width = `${progress}%`;
+        // Расчет прогресса
+        const progress = 100 - (remaining / duration) * 100;
+        progressCircle.style.setProperty('--progress', `${progress}%`);
+        
+        // Отображение оставшегося времени
+        const hours = Math.floor(remaining / (1000 * 60 * 60));
+        const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+        timeRemaining.textContent = `${hours}h ${minutes}m`;
     }, 1000);
+}
+
+function resetClaimButton() {
+    claimButton.classList.remove('disabled');
+    claimButton.querySelector('.progress-circle').style.setProperty('--progress', '0%');
+    claimButton.querySelector('.time-remaining').textContent = '';
 }
 
 function fetchTotalScore() {

@@ -381,44 +381,49 @@ button:hover {
 
 .claim-button {
     position: relative;
-    width: 80%;
-    max-width: 300px;
-    height: 80px;
-    margin: 20px auto;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
     background-color: #4CAF50;
     color: white;
     border: none;
-    border-radius: 15px;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
     cursor: pointer;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
+    margin: 20px auto;
+    padding: 0;
+    overflow: hidden;
     z-index: 1;
 }
 
-.claim-button:active {
-    transform: scale(0.98);
+.claim-button {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 5px;
 }
 
-.claim-button .claim-text {
-    position: relative;
+.claim-button .time-remaining {
+    font-size: 14px;
+    opacity: 0.8;
     z-index: 2;
 }
 
-.claim-button .progress-bar {
+.claim-button .progress-circle {
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
-    height: 5px;
-    width: 0%;
-    background-color: #2E7D32;
-    transition: width 0.1s linear;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: conic-gradient(#2E7D32 0%, transparent 0%);
     z-index: 1;
+    transition: background 0.1s linear;
 }
 
 .claim-button.disabled {
@@ -426,17 +431,10 @@ button:hover {
     cursor: not-allowed;
 }
 
-.claim-button.disabled .progress-bar {
-    background-color: #616161;
-}
-
-/* Animation for active claim button */
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+.claim-button.disabled .progress-circle {
+    background: conic-gradient(#616161 var(--progress), transparent var(--progress));
 }
 
 .claim-button.active {
-    animation: pulse 2s infinite;
+    animation: pulse 1.5s infinite;
 }
