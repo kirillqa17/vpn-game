@@ -215,7 +215,7 @@ button:hover {
     .play-overlay-button {
         width: 45px;
         height: 45px;
-        font-size: 20px;
+        font-size: 26px;
     }
 
     .claim-button {
@@ -350,19 +350,24 @@ button:hover {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background: white; /* Убираем прозрачность */
-    color: #000;
+    background: #4CAF50; /* Зеленый цвет по умолчанию */
+    color: white;
     border: none;
     font-size: 24px;
     display: flex;
     align-items: center;
-    justify-content: center; /* Центрируем содержимое */
+    justify-content: center;
     cursor: pointer;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     z-index: 2;
     padding: 0;
     border: 2px solid white;
-    transition: transform 0.2s;
+    transition: all 0.3s ease;
+}
+
+.play-overlay-button.disabled {
+    background: #9E9E9E; /* Серый цвет когда нет попыток */
+    cursor: not-allowed;
 }
 
 .play-overlay-button::before {

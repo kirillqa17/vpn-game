@@ -155,6 +155,21 @@ async function handleClaimClick() {
     }
 }
 
+async function updatePlayButtonState() {
+    try {
+        const response = await fetch(`https://svoivpn.duckdns.org/attempts/${window.userId}`);
+        const data = await response.json();
+        
+        if (data.attempts > 0) {
+            playButton.classList.remove('disabled');
+        } else {
+            playButton.classList.add('disabled');
+        }
+    } catch (error) {
+        console.error('Error checking attempts:', error);
+        playButton.classList.add('disabled');
+    }
+}
 
 function startCooldown(duration) {
     if (duration <= 0) {
@@ -204,12 +219,15 @@ async function decrementAttempts() {
             
             if (updateData.attempts !== undefined) {
                 canisterCountElement.textContent = updateData.attempts;
+                await updatePlayButtonState();
                 return true;
             }
         }
+        await updatePlayButtonState();
         return false;
     } catch (error) {
         console.error('Error decrementing attempts:', error);
+        await updatePlayButtonState();
         return false;
     }
 }
@@ -221,16 +239,17 @@ function showPage(targetId) {
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     
     const username = tg_username || 'Guest';
 
-    const canisterCount = 10; 
-    const coinCount = 500; 
+    await updatePlayButtonState();
 
     document.getElementById('username').textContent = username;
     document.getElementById('canisterCount').textContent = canisterCount;
     document.getElementById('coinCount').textContent = coinCount;
+
+    
 
     document.querySelectorAll('.menu-nav').forEach(button => {
         button.addEventListener('click', (event) => {
@@ -241,12 +260,14 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 playButton.addEventListener('click', async () => {
-    // Проверяем количество попыток
+    if (playButton.classList.contains('disabled')) {
+        alert('У вас закончились попытки!');
+        return;
+    }
+    
     const success = await decrementAttempts();
     if (success) {
         window.location.href = `game.html?userId=${window.userId}`;
-    } else {
-        alert('У вас закончились попытки!');
     }
 });
 
