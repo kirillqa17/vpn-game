@@ -135,6 +135,7 @@ async function handleClaimClick() {
                 body: JSON.stringify(2) // Добавляем 2 попытки
             });
             const attemptsData = await attemptsResponse.json();
+            await updatePlayButtonState();
             
             if (attemptsData.attempts !== undefined) {
                 canisterCountElement.textContent = attemptsData.attempts;
@@ -261,7 +262,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 playButton.addEventListener('click', async () => {
     if (playButton.classList.contains('disabled')) {
-        alert('У вас закончились попытки!');
+        alert('У вас закончился бензин!');
         return;
     }
     
