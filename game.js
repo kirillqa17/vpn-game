@@ -250,19 +250,18 @@ canvas.addEventListener('click', () => {
 });
 
 function sendGameResult(score) {
-    fetch(`https://svoivpngame.duckdns.org/result/${userId}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(score)
+    fetch(`https://svoivpn.duckdns.org/points/${userId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(score)
     })
     .then(response => response.json())
     .then(data => {
-    if (data.status === 'success' || data.status === 'update') {
-        console.log('Game result sent:', data);
-    } else {
-        console.error('Send error:', data.error);
-    }
+        if (data.points !== undefined) {
+            console.log('Game points updated:', data.points);
+        } else {
+            console.error('Failed to update points:', data.error);
+        }
     })
-    .catch(error => console.error('Send error:', error));
+    .catch(error => console.error('Error updating points:', error));
 }
-
