@@ -233,11 +233,38 @@ function gameOver() {
     scoreBackground.style.display = 'block';
 }
 
-function resetGame() {
-    startGame();
+async function decrementAttempts() {
+    try {
+        const response = await fetch(`https://svoivpn.duckdns.org/attempts/${window.userId}`);
+        const data = await response.json();
+        
+        if (data.attempts > 0) {
+            const updateResponse = await fetch(`https://svoivpn.duckdns.org/attempts/${window.userId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data.attempts - 1)
+            });
+            return await updateResponse.json();
+        }
+        return null;
+    } catch (error) {
+        console.error('Error decrementing attempts:', error);
+        return null;
+    }
+}
+
+async function resetGame() {
+    const attemptsData = await decrementAttempts();
+    if (attemptsData && attemptsData.attempts !== undefined) {
+        startGame();
+    } else {
+        alert('У вас закончились попытки!');
+        window.location.href = 'index.html';
+    }
 }
 
 restartButton.addEventListener('click', resetGame);
+
 menuButton.addEventListener('click', () => {
     window.location.href = 'index.html';
 });

@@ -162,7 +162,6 @@ function startCooldown(duration) {
         return;
     }
     claimButton.classList.add('disabled');
-    const progressCircle = claimButton.querySelector('.progress-circle');
     const timeRemaining = claimButton.querySelector('.time-remaining');
     const startTime = Date.now();
     const endTime = startTime + duration;
@@ -178,10 +177,6 @@ function startCooldown(duration) {
             return;
         }
         
-        // Расчет прогресса
-        const progress = 100 - (remaining / duration) * 100;
-        progressCircle.style.setProperty('--progress', `${progress}%`);
-        
         // Отображение оставшегося времени
         const hours = Math.floor(remaining / (1000 * 60 * 60));
         const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
@@ -191,21 +186,32 @@ function startCooldown(duration) {
 
 function resetClaimButton() {
     claimButton.classList.remove('disabled');
-    claimButton.querySelector('.progress-circle').style.setProperty('--progress', '0%');
     claimButton.querySelector('.time-remaining').textContent = '';
 }
 
-function fetchTotalScore() {
-    const userId = window.userId;
-    const url = `http://localhost:5000/get_total_score/${userId}`;
-
-    // fetch(url)
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         totalScoreNumber.textContent = data.total_score;
-    //     })
-    //     .catch(error => console.error('Error:', error));
-    totalScoreNumber.textContent = userId;
+async function decrementAttempts() {
+    try {
+        const response = await fetch(`https://svoivpn.duckdns.org/attempts/${window.userId}`);
+        const data = await response.json();
+        
+        if (data.attempts > 0) {
+            const updateResponse = await fetch(`https://svoivpn.duckdns.org/attempts/${window.userId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data.attempts - 1)
+            });
+            const updateData = await updateResponse.json();
+            
+            if (updateData.attempts !== undefined) {
+                canisterCountElement.textContent = updateData.attempts;
+                return true;
+            }
+        }
+        return false;
+    } catch (error) {
+        console.error('Error decrementing attempts:', error);
+        return false;
+    }
 }
 
 function showPage(targetId) {
@@ -236,29 +242,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 playButton.addEventListener('click', async () => {
     // Проверяем количество попыток
-    try {
-        const response = await fetch(`https://svoivpn.duckdns.org/attempts/${window.userId}`);
-        const data = await response.json();
-        
-        if (data.attempts > 0) {
-            // Уменьшаем количество попыток
-            const updateResponse = await fetch(`https://svoivpn.duckdns.org/attempts/${window.userId}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data.attempts - 1)
-            });
-            const updateData = await updateResponse.json();
-            
-            if (updateData.attempts !== undefined) {
-                canisterCountElement.textContent = updateData.attempts;
-                window.location.href = `game.html?userId=${window.userId}`;
-            }
-        } else {
-            alert('У вас закончились попытки!');
-        }
-    } catch (error) {
-        console.error('Error checking attempts:', error);
+    const success = await decrementAttempts();
+    if (success) {
         window.location.href = `game.html?userId=${window.userId}`;
+    } else {
+        alert('У вас закончились попытки!');
     }
 });
 
