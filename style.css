@@ -217,6 +217,12 @@ button:hover {
         height: 45px;
         font-size: 20px;
     }
+
+    .claim-button {
+        height: 70px;
+        font-size: 20px;
+        margin: 15px auto;
+    }
 }
 
 /* Медиазапросы для планшетов */
@@ -371,4 +377,66 @@ button:hover {
     height: 100%;
     object-fit: cover;
     display: block;
+}
+
+.claim-button {
+    position: relative;
+    width: 80%;
+    max-width: 300px;
+    height: 80px;
+    margin: 20px auto;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.claim-button:active {
+    transform: scale(0.98);
+}
+
+.claim-button .claim-text {
+    position: relative;
+    z-index: 2;
+}
+
+.claim-button .progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 5px;
+    width: 0%;
+    background-color: #2E7D32;
+    transition: width 0.1s linear;
+    z-index: 1;
+}
+
+.claim-button.disabled {
+    background-color: #9E9E9E;
+    cursor: not-allowed;
+}
+
+.claim-button.disabled .progress-bar {
+    background-color: #616161;
+}
+
+/* Animation for active claim button */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.claim-button.active {
+    animation: pulse 2s infinite;
 }
