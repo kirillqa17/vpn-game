@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 playButton.addEventListener('click', async () => {
     if (playButton.classList.contains('disabled')) {
-        alert('У вас закончился бензин!');
+        alert('У тебя закончился бензин!');
         return;
     }
     
