@@ -101,7 +101,6 @@ async function startGame() {
 
     // Списываем попытку
     const updateResponse = await decrementAttempts()
-    
     // Если не удалось списать попытку, возвращаем в меню
     if (!updateResponse.ok) {
         alert('Ошибка при списании попытки');
@@ -287,7 +286,7 @@ function gameOver() {
 }
 
 async function resetGame() {
-    const attemptsData = await decrementAttempts();
+    const attemptsData = await decrementAttempts().json();
     if (!attemptsData.attempts || attemptsData.attempts <= 0) {
         alert('У тебя закончился бензин!');
         window.location.href = 'index.html';
@@ -343,7 +342,7 @@ async function decrementAttempts() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data.attempts - 1)
             });
-            return await updateResponse.json();
+            return updateResponse;
         }
         return null;
     } catch (error) {
