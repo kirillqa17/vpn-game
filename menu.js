@@ -7,6 +7,7 @@ const coinCountElement = document.getElementById('coinCount');
 const claimButton = document.getElementById('claimButton');
 const coinImg = new Image();
 const canisterImg = new Image();
+const cupImg = new Image();
 
 let loadedData = 0;
 const totalDataToLoad = 3; // изображения + points + attempts
@@ -50,9 +51,10 @@ async function loadUserData() {
 
 coinImg.src = 'images/monetka.png';
 canisterImg.src = 'images/kanistra.png';
+cupImg.src = 'images/cup.png';
 
 
-const images = [coinImg, canisterImg];
+const images = [coinImg, canisterImg, cupImg];
 let loadedImages = 0;
 
 for (let img of images) {
@@ -245,6 +247,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const username = tg_username || 'Guest';
 
     await updatePlayButtonState();
+    await loadUserRecord();
 
     document.getElementById('username').textContent = username;
  
@@ -273,4 +276,16 @@ function loadScript(src) {
     script.src = src;
     script.onload = () => console.log(`${src} loaded`);
     document.head.appendChild(script);
+}
+
+async function loadUserRecord() {
+    try {
+        const response = await fetch(`https://svoivpn.duckdns.org/record/${window.userId}`);
+        const data = await response.json();
+        if (data.record !== undefined) {
+            document.getElementById('score_total').textContent = data.record;
+        }
+    } catch (error) {
+        console.error('Error loading record:', error);
+    }
 }

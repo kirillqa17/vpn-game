@@ -84,8 +84,9 @@ let gameStartTime = 0; // Время начала игры
 const baseBackgroundSpeed = 100;
 let currentBackgroundSpeed= baseBackgroundSpeed;
 
-let lastPipeTime = 0;
-const pipeInterval = 2;
+let basePipeInterval = 3; // Базовый интервал между трубами (в секундах)
+let currentPipeInterval = basePipeInterval; 
+let lastPipeTime = 0; 
 
 
 function startGame() {
@@ -155,6 +156,7 @@ function draw(timestamp) {
     // Увеличиваем скорость труб со временем
     currentPipeSpeed = basePipeSpeed + (speedIncreaseRate * gameTime);
     currentBackgroundSpeed = baseBackgroundSpeed + ((speedIncreaseRate * gameTime) /2)
+    
 
     context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -175,8 +177,10 @@ function draw(timestamp) {
         return;
     }
 
+    currentPipeInterval = basePipeInterval * (basePipeSpeed / currentPipeSpeed);
+
     lastPipeTime += deltaTime;
-    if (lastPipeTime >= pipeInterval) {
+    if (lastPipeTime >= currentPipeInterval) { 
         let pipeY = Math.random() * (canvas.height - gap - 200) - canvas.height;
         pipes.push({ x: canvas.width, y: pipeY });
         lastPipeTime = 0;
@@ -237,6 +241,7 @@ function draw(timestamp) {
 function triggerGameOver() {
     gameStarted = false;
     sendGameResult(score);
+    updateUserRecord(score);
     setTimeout(gameOver, 1000);
 }
 
@@ -304,5 +309,34 @@ async function decrementAttempts() {
     } catch (error) {
         console.error('Error decrementing attempts:', error);
         return null;
+    }
+}
+
+async function updateUserRecord(newScore) {
+    let record;
+    try {
+        const response = await fetch(`https://svoivpn.duckdns.org/record/${userId}`);
+        const data = await response.json();
+        if (data.record !== undefined) {
+            record = data.record
+        }
+    } catch (error) {
+        console.error('Error loading record:', error);
+    }
+
+    if (record < newScore){
+        try {
+            const response = await fetch(`https://svoivpn.duckdns.org/record/${userId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newScore)
+            });
+            const data = await response.json();
+            if (data.record !== undefined) {
+                console.log('Record updated:', data.record);
+            }
+        } catch (error) {
+            console.error('Error updating record:', error);
+        }
     }
 }
