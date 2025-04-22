@@ -198,18 +198,19 @@ function draw(timestamp) {
         lastPipeTime = 0;
     }
 
-    for (let i = 0; i < pipes.length; i++) {
+    for (let i = pipes.length - 1; i >= 0; i--) {
         pipes[i].x -= currentPipeSpeed * deltaTime;
-
+    
         if (pipes[i].x + pipeWidth < 0) {
             pipes.splice(i, 1);
             score++;
             scoreSpan.textContent = score;
+            continue; // Пропускаем остальную обработку для удаленной трубы
         }
-
+    
         context.drawImage(pipeNorthImg, pipes[i].x, pipes[i].y, pipeWidth, canvas.height);
         context.drawImage(pipeSouthImg, pipes[i].x, pipes[i].y + canvas.height + gap, pipeWidth, canvas.height);
-
+    
         const bx = bird.x + bird.hitboxOffsetX;
         const by = bird.y + bird.hitboxOffsetY;
         const bw = bird.hitboxWidth;
@@ -221,7 +222,7 @@ function draw(timestamp) {
         // context.strokeRect(pipes[i].x, pipes[i].y, pipeWidth, canvas.height);
         // context.strokeRect(pipes[i].x, pipes[i].y + canvas.height + gap, pipeWidth, canvas.height);
         // context.strokeRect(bx, by, bw, bh);
-
+    
         if (
             bx + bw > pipes[i].x &&
             bx < pipes[i].x + pipeWidth &&
@@ -231,6 +232,8 @@ function draw(timestamp) {
             return;
         }
     }
+
+    
 
     for (let i = 0; i < smokes.length; i++) {
         context.globalAlpha = smokes[i].opacity;
@@ -269,7 +272,7 @@ async function resetGame() {
     if (attemptsData && attemptsData.attempts !== undefined) {
         startGame();
     } else {
-        alert('У вас закончились попытки!');
+        alert('У тебя закончился бензин!' + attemptsData.attempts + attemptsData);
         window.location.href = 'index.html';
     }
 }
