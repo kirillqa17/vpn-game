@@ -247,11 +247,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await updatePlayButtonState();
 
     document.getElementById('username').textContent = username;
-    document.getElementById('canisterCount').textContent = canisterCount;
-    document.getElementById('coinCount').textContent = coinCount;
-
-    
-
+ 
     document.querySelectorAll('.menu-nav').forEach(button => {
         button.addEventListener('click', (event) => {
             const target = event.target.getAttribute('data-target');

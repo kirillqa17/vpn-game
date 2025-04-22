@@ -77,10 +77,16 @@ let gameStarted = false;
 let backgroundX = 0;
 let lastTime = 0;
 
+const basePipeSpeed = 200; // Начальная скорость труб
+let currentPipeSpeed = basePipeSpeed; // Текущая скорость труб
+let speedIncreaseRate = 10; // На сколько увеличивается скорость каждую секунду
+let gameStartTime = 0; // Время начала игры
+const baseBackgroundSpeed = 100;
+let currentBackgroundSpeed= baseBackgroundSpeed;
+
 let lastPipeTime = 0;
 const pipeInterval = 2;
 
-const backgroundSpeed = 100;
 
 function startGame() {
     gameStarted = false;
@@ -91,6 +97,8 @@ function startGame() {
     bird.y = 150;
     bird.velocity = 0;
     backgroundX = 0;
+    currentPipeSpeed = basePipeSpeed; // Сброс скорости
+    gameStartTime = performance.now(); // Запись времени начала игры
     scoreSpan.textContent = score;
     scoreBackground.style.display = 'block';
     messageDiv.style.display = 'none';
@@ -142,9 +150,15 @@ function draw(timestamp) {
     const deltaTime = (timestamp - lastTime) / 1000;
     lastTime = timestamp;
 
+    const gameTime = (timestamp - gameStartTime) / 1000;
+
+    // Увеличиваем скорость труб со временем
+    currentPipeSpeed = basePipeSpeed + (speedIncreaseRate * gameTime);
+    currentBackgroundSpeed = baseBackgroundSpeed + ((speedIncreaseRate * gameTime) /2)
+
     context.clearRect(0, 0, canvas.width, canvas.height);
 
-    backgroundX -= backgroundSpeed * deltaTime;
+    backgroundX -= currentBackgroundSpeed * deltaTime;
     if (backgroundX <= -canvas.width) backgroundX = 0;
 
     context.drawImage(backgroundImg, backgroundX, 0, canvas.width, canvas.height);
@@ -169,7 +183,7 @@ function draw(timestamp) {
     }
 
     for (let i = 0; i < pipes.length; i++) {
-    pipes[i].x -= 200 * deltaTime;
+        pipes[i].x -= currentPipeSpeed * deltaTime;
 
         if (pipes[i].x + pipeWidth < 0) {
             pipes.splice(i, 1);
@@ -233,26 +247,6 @@ function gameOver() {
     scoreBackground.style.display = 'block';
 }
 
-async function decrementAttempts() {
-    try {
-        const response = await fetch(`https://svoivpn.duckdns.org/attempts/${window.userId}`);
-        const data = await response.json();
-        
-        if (data.attempts > 0) {
-            const updateResponse = await fetch(`https://svoivpn.duckdns.org/attempts/${window.userId}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data.attempts - 1)
-            });
-            return await updateResponse.json();
-        }
-        return null;
-    } catch (error) {
-        console.error('Error decrementing attempts:', error);
-        return null;
-    }
-}
-
 async function resetGame() {
     const attemptsData = await decrementAttempts();
     if (attemptsData && attemptsData.attempts !== undefined) {
@@ -291,4 +285,24 @@ function sendGameResult(score) {
         }
     })
     .catch(error => console.error('Error updating points:', error));
+}
+
+async function decrementAttempts() {
+    try {
+        const response = await fetch(`https://svoivpn.duckdns.org/attempts/${window.userId}`);
+        const data = await response.json();
+        
+        if (data.attempts > 0) {
+            const updateResponse = await fetch(`https://svoivpn.duckdns.org/attempts/${window.userId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data.attempts - 1)
+            });
+            return await updateResponse.json();
+        }
+        return null;
+    } catch (error) {
+        console.error('Error decrementing attempts:', error);
+        return null;
+    }
 }
