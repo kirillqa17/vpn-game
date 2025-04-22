@@ -88,25 +88,48 @@ let basePipeInterval = 3; // Базовый интервал между труб
 let currentPipeInterval = basePipeInterval; 
 let lastPipeTime = 0; 
 
+async function checkAndDecrementAttempts() {
+    try {
+        // Показываем экран загрузки
+        document.getElementById('loadingScreen').style.display = 'flex';
+        
+        // Проверяем попытки
+        const attemptsResponse = await fetch(`https://svoivpn.duckdns.org/attempts/${userId}`);
+        if (!attemptsResponse.ok) throw new Error('Failed to fetch attempts');
+        
+        const attemptsData = await attemptsResponse.json();
+        
+        if (!attemptsData.attempts || attemptsData.attempts <= 0) {
+            alert('У тебя закончился бензин!');
+            window.location.href = 'index.html';
+            return false;
+        }
+
+        // Списываем попытку
+        const updateResponse = await fetch(`https://svoivpn.duckdns.org/attempts/${userId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(attemptsData.attempts - 1)
+        });
+        
+        if (!updateResponse.ok) {
+            alert('Ошибка при списании попытки');
+            window.location.href = 'index.html';
+            return false;
+        }
+
+        return true;
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Произошла ошибка при запуске игры');
+        window.location.href = 'index.html';
+        return false;
+    }
+}
 
 async function startGame() {
-    const attemptsResponse = await fetch(`https://svoivpn.duckdns.org/attempts/${userId}`);
-    const attemptsData = await attemptsResponse.json();
-    
-    if (!attemptsData.attempts || attemptsData.attempts <= 0) {
-        alert('У тебя закончился бензин!');
-        window.location.href = 'index.html';
-        return;
-    }
-
-    // Списываем попытку
-    const updateResponse = await decrementAttempts()
-    // Если не удалось списать попытку, возвращаем в меню
-    if (!updateResponse.ok) {
-        alert('Ошибка при списании попытки');
-        window.location.href = 'index.html';
-        return;
-    }
+    const canStart = await checkAndDecrementAttempts();
+    if (!canStart) return;
 
     gameStarted = false;
     frame = 0;
@@ -123,6 +146,7 @@ async function startGame() {
     scoreBackground.style.display = 'block';
     messageDiv.style.display = 'none';
     buttonContainer.style.display = 'none';
+    document.getElementById('loadingScreen').style.display = 'none';
     startCountdown();
 }
 
@@ -286,19 +310,29 @@ function gameOver() {
 }
 
 async function resetGame() {
-    const attemptsData = await decrementAttempts().json();
-    if (!attemptsData.attempts || attemptsData.attempts <= 0) {
-        alert('У тебя закончился бензин!');
-        window.location.href = 'index.html';
-        return;
-    }
-    else if (attemptsData !== undefined && attemptsData.attempts !== undefined){
-        startGame();
-    }
-    else {
-        alert('Ошибка');
-        window.location.href = 'index.html';
-    }
+    const canRestart = await checkAndDecrementAttempts();
+    if (!canRestart) return;
+    
+    // Если успешно списали попытку, перезапускаем игру
+    gameStarted = false;
+    frame = 0;
+    score = 0;
+    pipes.length = 0;
+    smokes.length = 0;
+    bird.y = 150;
+    bird.velocity = 0;
+    backgroundX = 0;
+    currentPipeSpeed = basePipeSpeed;
+    gameStartTime = performance.now();
+    scoreSpan.textContent = score;
+    currentPipeInterval = basePipeInterval;
+    scoreBackground.style.display = 'block';
+    messageDiv.style.display = 'none';
+    buttonContainer.style.display = 'none';
+    
+    // Скрываем экран загрузки
+    document.getElementById('loadingScreen').style.display = 'none';
+    startCountdown();
 }
 
 restartButton.addEventListener('click', resetGame);
