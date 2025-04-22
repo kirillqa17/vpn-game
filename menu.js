@@ -283,7 +283,7 @@ async function loadUserRecord() {
         const response = await fetch(`https://svoivpn.duckdns.org/record/${window.userId}`);
         const data = await response.json();
         if (data.record !== undefined) {
-            document.getElementById('score_total').textContent = data.record;
+            document.querySelector('.record-text').textContent = data.record;
         }
     } catch (error) {
         console.error('Error loading record:', error);
