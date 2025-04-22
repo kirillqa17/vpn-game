@@ -272,7 +272,7 @@ async function resetGame() {
     if (attemptsData && attemptsData.attempts !== undefined) {
         startGame();
     } else {
-        alert('У тебя закончился бензин!' + attemptsData.attempts + attemptsData);
+        alert('У тебя закончился бензин!');
         window.location.href = 'index.html';
     }
 }
@@ -309,11 +309,11 @@ function sendGameResult(score) {
 
 async function decrementAttempts() {
     try {
-        const response = await fetch(`https://svoivpn.duckdns.org/attempts/${window.userId}`);
+        const response = await fetch(`https://svoivpn.duckdns.org/attempts/${userId}`);
         const data = await response.json();
         
         if (data.attempts > 0) {
-            const updateResponse = await fetch(`https://svoivpn.duckdns.org/attempts/${window.userId}`, {
+            const updateResponse = await fetch(`https://svoivpn.duckdns.org/attempts/${userId}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data.attempts - 1)
