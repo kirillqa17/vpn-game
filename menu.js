@@ -207,33 +207,6 @@ function resetClaimButton() {
     claimButton.querySelector('.time-remaining').textContent = '';
 }
 
-async function decrementAttempts() {
-    try {
-        const response = await fetch(`https://svoivpn.duckdns.org/attempts/${window.userId}`);
-        const data = await response.json();
-        
-        if (data.attempts > 0) {
-            const updateResponse = await fetch(`https://svoivpn.duckdns.org/attempts/${window.userId}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data.attempts - 1)
-            });
-            const updateData = await updateResponse.json();
-            
-            if (updateData.attempts !== undefined) {
-                canisterCountElement.textContent = updateData.attempts;
-                await updatePlayButtonState();
-                return true;
-            }
-        }
-        await updatePlayButtonState();
-        return false;
-    } catch (error) {
-        console.error('Error decrementing attempts:', error);
-        await updatePlayButtonState();
-        return false;
-    }
-}
 
 function showPage(targetId) {
     const sections = document.querySelectorAll('.menu-section');
@@ -265,10 +238,7 @@ playButton.addEventListener('click', async () => {
         return;
     }
     
-    const success = await decrementAttempts();
-    if (success) {
-        window.location.href = `game.html?userId=${window.userId}`;
-    }
+    window.location.href = `game.html?userId=${window.userId}`;
 });
 
 function loadScript(src) {

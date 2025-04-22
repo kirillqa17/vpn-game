@@ -89,7 +89,26 @@ let currentPipeInterval = basePipeInterval;
 let lastPipeTime = 0; 
 
 
-function startGame() {
+async function startGame() {
+    const attemptsResponse = await fetch(`https://svoivpn.duckdns.org/attempts/${userId}`);
+    const attemptsData = await attemptsResponse.json();
+    
+    if (!attemptsData.attempts || attemptsData.attempts <= 0) {
+        alert('У тебя закончился бензин!');
+        window.location.href = 'index.html';
+        return;
+    }
+
+    // Списываем попытку
+    const updateResponse = await decrementAttempts()
+    
+    // Если не удалось списать попытку, возвращаем в меню
+    if (!updateResponse.ok) {
+        alert('Ошибка при списании попытки');
+        window.location.href = 'index.html';
+        return;
+    }
+
     gameStarted = false;
     frame = 0;
     score = 0;
@@ -269,10 +288,16 @@ function gameOver() {
 
 async function resetGame() {
     const attemptsData = await decrementAttempts();
-    if (attemptsData && attemptsData.attempts !== undefined) {
-        startGame();
-    } else {
+    if (!attemptsData.attempts || attemptsData.attempts <= 0) {
         alert('У тебя закончился бензин!');
+        window.location.href = 'index.html';
+        return;
+    }
+    else if (attemptsData !== undefined && attemptsData.attempts !== undefined){
+        startGame();
+    }
+    else {
+        alert('Ошибка');
         window.location.href = 'index.html';
     }
 }
