@@ -101,6 +101,7 @@ function startGame() {
     currentPipeSpeed = basePipeSpeed; // Сброс скорости
     gameStartTime = performance.now(); // Запись времени начала игры
     scoreSpan.textContent = score;
+    currentPipeInterval = basePipeInterval;
     scoreBackground.style.display = 'block';
     messageDiv.style.display = 'none';
     buttonContainer.style.display = 'none';
@@ -148,21 +149,32 @@ function showStartMessage() {
 }
 
 function draw(timestamp) {
-    const deltaTime = (timestamp - lastTime) / 1000;
+    if (!gameStarted) return;
+
+    if (!lastTime) lastTime = timestamp;
+    let deltaTime = (timestamp - lastTime) / 1000;
+    deltaTime = Math.min(deltaTime, 0.1);
     lastTime = timestamp;
 
+    // Плавное увеличение скорости с ограничением
     const gameTime = (timestamp - gameStartTime) / 1000;
+    currentPipeSpeed = Math.min(
+        basePipeSpeed + (speedIncreaseRate * Math.sqrt(gameTime)),
+        400 // max speed
+    );
+    currentBackgroundSpeed = currentPipeSpeed / 2;
 
     // Увеличиваем скорость труб со временем
-    currentPipeSpeed = basePipeSpeed + (speedIncreaseRate * gameTime);
-    currentBackgroundSpeed = baseBackgroundSpeed + ((speedIncreaseRate * gameTime) /2)
+    currentPipeInterval = Math.max(
+        basePipeInterval * (basePipeSpeed / currentPipeSpeed),
+        0.5 // min interval
+    );
     
 
     context.clearRect(0, 0, canvas.width, canvas.height);
 
     backgroundX -= currentBackgroundSpeed * deltaTime;
     if (backgroundX <= -canvas.width) backgroundX = 0;
-
     context.drawImage(backgroundImg, backgroundX, 0, canvas.width, canvas.height);
     context.drawImage(backgroundImg, backgroundX + canvas.width - 2, 0, canvas.width, canvas.height);
 
