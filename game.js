@@ -94,7 +94,7 @@ async function checkAndDecrementAttempts() {
         document.getElementById('loadingScreen').style.display = 'flex';
         
         // Проверяем попытки
-        const attemptsResponse = await fetch(`https://svoivpn.duckdns.org:4443/attempts/${userId}`);
+        const attemptsResponse = await fetch(`https://185.70.186.60:4443/attempts/${userId}`);
         if (!attemptsResponse.ok) throw new Error('Failed to fetch attempts');
         
         const attemptsData = await attemptsResponse.json();
@@ -106,7 +106,7 @@ async function checkAndDecrementAttempts() {
         }
 
         // Списываем попытку
-        const updateResponse = await fetch(`https://svoivpn.duckdns.org:4443/attempts/${userId}`, {
+        const updateResponse = await fetch(`https://185.70.186.60:4443/attempts/${userId}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(attemptsData.attempts - 1)
@@ -349,7 +349,7 @@ canvas.addEventListener('click', () => {
 });
 
 function sendGameResult(score) {
-    fetch(`https://svoivpn.duckdns.org:4443/points/${userId}`, {
+    fetch(`https://185.70.186.60:4443/points/${userId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(score)
@@ -367,11 +367,11 @@ function sendGameResult(score) {
 
 async function decrementAttempts() {
     try {
-        const response = await fetch(`https://svoivpn.duckdns.org:4443/attempts/${userId}`);
+        const response = await fetch(`https://185.70.186.60:4443/attempts/${userId}`);
         const data = await response.json();
         
         if (data.attempts > 0) {
-            const updateResponse = await fetch(`https://svoivpn.duckdns.org:4443/attempts/${userId}`, {
+            const updateResponse = await fetch(`https://185.70.186.60:4443/attempts/${userId}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data.attempts - 1)
@@ -388,7 +388,7 @@ async function decrementAttempts() {
 async function updateUserRecord(newScore) {
     let record;
     try {
-        const response = await fetch(`https://svoivpn.duckdns.org:4443/record/${userId}`);
+        const response = await fetch(`https://185.70.186.60:4443/record/${userId}`);
         const data = await response.json();
         if (data.record !== undefined) {
             record = data.record
@@ -399,7 +399,7 @@ async function updateUserRecord(newScore) {
 
     if (record < newScore){
         try {
-            const response = await fetch(`https://svoivpn.duckdns.org:4443/record/${userId}`, {
+            const response = await fetch(`https://185.70.186.60:4443/record/${userId}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newScore)
