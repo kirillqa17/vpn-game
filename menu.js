@@ -23,7 +23,7 @@ function checkAllLoaded() {
 async function loadUserData() {
     try {
         // Загружаем очки
-        const pointsResponse = await fetch(`https://185.70.186.60:4443/points/${window.userId}`);
+        const pointsResponse = await fetch(`https://game.svoivpn.duckdns.org/points/${window.userId}`);
         const pointsData = await pointsResponse.json();
         if (pointsData.points !== undefined) {
             coinCountElement.textContent = pointsData.points;
@@ -32,7 +32,7 @@ async function loadUserData() {
         }
 
         // Загружаем попытки
-        const attemptsResponse = await fetch(`https://185.70.186.60:4443/attempts/${window.userId}`);
+        const attemptsResponse = await fetch(`https://game.svoivpn.duckdns.org/attempts/${window.userId}`);
         const attemptsData = await attemptsResponse.json();
         if (attemptsData.attempts !== undefined) {
             canisterCountElement.textContent = attemptsData.attempts;
@@ -92,7 +92,7 @@ function initializeClaimButton() {
 
 async function checkClaimStatus() {
     try {
-        const response = await fetch(`https://185.70.186.60:4443/claim/${window.userId}`);
+        const response = await fetch(`https://game.svoivpn.duckdns.org/claim/${window.userId}`);
         const data = await response.json();
         
         if (data.next_claim_time) {
@@ -124,14 +124,14 @@ async function handleClaimClick() {
         claimButton.classList.add('active');
         
         // Отправляем запрос на сервер для обновления времени клейма
-        const response = await fetch(`https://185.70.186.60:4443/claim/${window.userId}`, {
+        const response = await fetch(`https://game.svoivpn.duckdns.org/claim/${window.userId}`, {
             method: 'POST'
         });
         const data = await response.json();
         
         if (data.next_claim_time) {
             // Обновляем попытки
-            const attemptsResponse = await fetch(`https://185.70.186.60:4443/attempts/${window.userId}/add`, {
+            const attemptsResponse = await fetch(`https://game.svoivpn.duckdns.org/attempts/${window.userId}/add`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(2) // Добавляем 2 попытки
@@ -160,7 +160,7 @@ async function handleClaimClick() {
 
 async function updatePlayButtonState() {
     try {
-        const response = await fetch(`https://185.70.186.60:4443/attempts/${window.userId}`);
+        const response = await fetch(`https://game.svoivpn.duckdns.org/attempts/${window.userId}`);
         const data = await response.json();
         
         if (data.attempts > 0) {
@@ -250,7 +250,7 @@ function loadScript(src) {
 
 async function loadUserRecord() {
     try {
-        const response = await fetch(`https://185.70.186.60:4443/record/${window.userId}`);
+        const response = await fetch(`https://game.svoivpn.duckdns.org/record/${window.userId}`);
         const data = await response.json();
         if (data.record !== undefined) {
             document.querySelector('.record-text').textContent = data.record;
