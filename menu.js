@@ -279,15 +279,15 @@ async function handleExchange() {
     const exchangeMessage = document.getElementById('exchangeMessage');
     const coinCountElement = document.getElementById('coinCount');
     
-    const coins = parseInt(daysAmountInput.value);
+    const days = parseInt(daysAmountInput.value);
     
-    if (isNaN(coins)) {
-        showExchangeMessage('Введите корректное количество монет', 'error');
+    if (isNaN(days)) {
+        showExchangeMessage('Введите корректное количество дней', 'error');
         return;
     }
     
-    if (coins < 30) {
-        showExchangeMessage('Минимальная сумма обмена - 30 монет', 'error');
+    if (days < 1) {
+        showExchangeMessage('Минимальная сумма обмена 1 день / 30 монет', 'error');
         return;
     }
     
@@ -298,7 +298,7 @@ async function handleExchange() {
         const response = await fetch(`https://game.svoivpn.duckdns.org/exchange/${window.userId}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(coins)
+            body: JSON.stringify(days)
         });
         
         const data = await response.json();
