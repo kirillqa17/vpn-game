@@ -270,22 +270,8 @@ document.addEventListener('DOMContentLoaded', () => {
         exchangeButton.addEventListener('click', handleExchange);
     }
     
-    if (coinAmountInput) {
-        coinAmountInput.addEventListener('input', validateCoinAmount);
-    }
 });
 
-function validateCoinAmount() {
-    const input = document.getElementById('coinAmount');
-    const exchangeButton = document.getElementById('exchangeButton');
-    const minCoins = 30;
-    
-    if (input.value < minCoins) {
-        input.value = minCoins;
-    }
-    
-    // Можно добавить проверку на максимальное количество монет у пользователя
-}
 
 async function handleExchange() {
     const exchangeButton = document.getElementById('exchangeButton');
