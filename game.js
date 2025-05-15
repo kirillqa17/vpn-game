@@ -79,7 +79,7 @@ let lastTime = 0;
 
 const basePipeSpeed = 200; // Начальная скорость труб
 let currentPipeSpeed = basePipeSpeed; // Текущая скорость труб
-let speedIncreaseRate = 10; // На сколько увеличивается скорость каждую секунду
+let speedIncreaseRate = 50; // На сколько увеличивается скорость каждую секунду
 let gameStartTime = 0; // Время начала игры
 const baseBackgroundSpeed = 100;
 let currentBackgroundSpeed= baseBackgroundSpeed;
