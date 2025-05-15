@@ -77,12 +77,12 @@ let gameStarted = false;
 let backgroundX = 0;
 let lastTime = 0;
 
-const basePipeSpeed = 200; // Начальная скорость труб
+const basePipeSpeed = 150; // Начальная скорость труб
 let currentPipeSpeed = basePipeSpeed; // Текущая скорость труб
-let speedIncreaseRate = 50; // На сколько увеличивается скорость каждую секунду
+let speedIncreaseRate = 100; // На сколько увеличивается скорость каждую секунду
 let gameStartTime = 0; // Время начала игры
-const baseBackgroundSpeed = 100;
-let currentBackgroundSpeed= baseBackgroundSpeed;
+const baseBackgroundSpeed = 75;
+let currentBackgroundSpeed = baseBackgroundSpeed;
 
 let basePipeInterval = 3; // Базовый интервал между трубами (в секундах)
 let currentPipeInterval = basePipeInterval; 
