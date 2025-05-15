@@ -263,7 +263,7 @@ async function loadUserRecord() {
 // Добавим в конец файла
 document.addEventListener('DOMContentLoaded', () => {
     const exchangeButton = document.getElementById('exchangeButton');
-    const coinAmountInput = document.getElementById('coinAmount');
+    const daysAmountInput = document.getElementById('daysAmount');
     const exchangeMessage = document.getElementById('exchangeMessage');
     
     if (exchangeButton) {
@@ -275,11 +275,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function handleExchange() {
     const exchangeButton = document.getElementById('exchangeButton');
-    const coinAmountInput = document.getElementById('coinAmount');
+    const daysAmountInput = document.getElementById('daysAmount');
     const exchangeMessage = document.getElementById('exchangeMessage');
     const coinCountElement = document.getElementById('coinCount');
     
-    const coins = parseInt(coinAmountInput.value);
+    const coins = parseInt(daysAmountInput.value);
     
     if (isNaN(coins)) {
         showExchangeMessage('Введите корректное количество монет', 'error');
@@ -314,10 +314,6 @@ async function handleExchange() {
             );
             coinCountElement.textContent = data.new_coin_balance;
             
-            // Если остались неизрасходованные монеты
-            if (data.remaining_coins > 0) {
-                coinAmountInput.value = data.remaining_coins;
-            }
         }
     } catch (error) {
         console.error('Exchange error:', error);

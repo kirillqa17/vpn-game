@@ -43,16 +43,17 @@
         <div id="exchange" class="menu-section hidden">
             <h2>Обмен монеток</h2>
             <div class="exchange-rate">
+                <span>1 день подписки VPN = </span>
                 <span>30</span>
                 <img src="images/monetka.png" class="coin-icon" alt="Monetka" />
-                <span>= 1 день подписки VPN</span>
+                
             </div>
             <div class="exchange-form">
                 <div>
-                    <label for="coinAmount">Введите количество монеток(минимум 30):</label>
+                    <label for="daysAmount">Введите количество дней для покупки:</label>
                 </div>
                 <div class="input-group">
-                    <input type="number" id="coinAmount" name="coinAmount" min = "30" value = "30"/>
+                    <input type="number" id="daysAmount" name="daysAmount" min = "1" value = "1"/>
                 </div>
                 <button id="exchangeButton" class="exchange-button">Обменять</button>
             </div>
