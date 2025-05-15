@@ -218,16 +218,22 @@ function showPage(targetId) {
 document.addEventListener('DOMContentLoaded', async () => {
     
     const username = tg_username || 'Guest';
+    document.getElementById('username').textContent = username;
+
 
     await updatePlayButtonState();
     await loadUserRecord();
+    await loadTasks();
 
-    document.getElementById('username').textContent = username;
  
     document.querySelectorAll('.menu-nav').forEach(button => {
         button.addEventListener('click', (event) => {
             const target = event.target.getAttribute('data-target');
             showPage(target);
+            
+            if (target === 'tasks') {
+                loadTasks();
+            }
         });
     });
 });
@@ -258,4 +264,110 @@ async function loadUserRecord() {
     } catch (error) {
         console.error('Error loading record:', error);
     }
+}
+
+async function loadTasks() {
+    try {
+        const response = await fetch(`https://game.svoivpn.duckdns.org/tasks/${window.userId}`);
+        const tasks = await response.json();
+        
+        const tasksContainer = document.querySelector('#tasks ul');
+        tasksContainer.innerHTML = ''; // Очищаем предыдущие задания
+        
+        tasks.forEach(task => {
+            const taskElement = document.createElement('li');
+            taskElement.className = 'task-item';
+            
+            // Добавляем класс для выполненных заданий
+            if (task.is_completed) {
+                taskElement.classList.add('completed');
+            }
+            
+            taskElement.innerHTML = `
+                <div class="task-header">
+                    <h3>${task.title}</h3>
+                    <span class="task-reward">${task.reward_coins} <img src="images/monetka.png" class="coin-icon" alt="Coins" /></span>
+                </div>
+                <p class="task-description">${task.description}</p>
+                <div class="task-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${(task.progress / task.target) * 100}%"></div>
+                    </div>
+                    <span class="progress-text">${task.progress}/${task.target}</span>
+                </div>
+                ${task.is_completed ? 
+                    '<div class="task-completed">Выполнено!</div>' : 
+                    '<button class="task-action" data-task-id="${task.task_id}">Выполнить</button>'}
+            `;
+            
+            tasksContainer.appendChild(taskElement);
+        });
+        
+        // Добавляем обработчики событий для кнопок заданий
+        document.querySelectorAll('.task-action').forEach(button => {
+            button.addEventListener('click', async (e) => {
+                const taskId = e.target.getAttribute('data-task-id');
+                await completeTaskStep(taskId);
+            });
+        });
+        
+    } catch (error) {
+        console.error('Error loading tasks:', error);
+        document.querySelector('#tasks ul').innerHTML = '<li>Не удалось загрузить задания</li>';
+    }
+}
+
+// Функция для выполнения шага задания
+async function completeTaskStep(taskId) {
+    try {
+        const response = await fetch(`https://game.svoivpn.duckdns.org/tasks/${window.userId}/update/${taskId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(1) // Увеличиваем прогресс на 1
+        });
+        
+        const result = await response.json();
+        
+        if (result.status === 'completed') {
+            // Обновляем счет монет, если задание выполнено
+            if (result.new_points !== undefined) {
+                document.getElementById('coinCount').textContent = result.new_points;
+            }
+            
+            // Показываем уведомление о награде
+            showRewardNotification(result.reward);
+        }
+        
+        // Перезагружаем список заданий
+        await loadTasks();
+        
+    } catch (error) {
+        console.error('Error completing task:', error);
+        alert('Не удалось обновить задание');
+    }
+}
+
+// Функция для показа уведомления о награде
+function showRewardNotification(reward) {
+    const notification = document.createElement('div');
+    notification.className = 'reward-notification';
+    notification.innerHTML = `
+        <div class="reward-content">
+            <span>+${reward} <img src="images/monetka.png" class="coin-icon" alt="Coins" /></span>
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Анимация появления и исчезновения
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 100);
+    
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            notification.remove();
+        }, 500);
+    }, 3000);
 }
