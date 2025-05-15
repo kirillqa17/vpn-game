@@ -443,3 +443,98 @@ button:hover {
     font-size: 16px;
     font-weight: bold;
 }
+
+.exchange-rate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+    font-size: 18px;
+    color: white;
+}
+
+.exchange-rate img {
+    margin: 0 5px;
+    width: 20px;
+    height: 20px;
+}
+
+.exchange-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.exchange-form label {
+    color: white;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 200px;
+}
+
+.input-group input {
+    flex: 1;
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: none;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.exchange-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: auto;
+    margin: 0 auto;
+}
+
+.exchange-button:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.exchange-button:active {
+    transform: translateY(0);
+}
+
+.exchange-button.disabled {
+    background-color: #9E9E9E;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.exchange-message {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.exchange-message.success {
+    background-color: rgba(76, 175, 80, 0.2);
+    color: #4CAF50;
+}
+
+.exchange-message.error {
+    background-color: rgba(244, 67, 54, 0.2);
+    color: #f44336;
+}

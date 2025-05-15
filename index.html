@@ -41,10 +41,21 @@
         </div>
 
         <div id="exchange" class="menu-section hidden">
-            <h2>Exchange Coins</h2>
-            <label for="coinAmount">Amount of Coins:</label>
-            <input type="number" id="coinAmount" name="coinAmount" min="1" />
-            <button id="exchangeButton">Exchange</button>
+            <h2>Обмен монеток</h2>
+            <div class="exchange-rate">
+                <span>30</span>
+                <img src="images/monetka.png" class="coin-icon" alt="Monetka" />
+                <span>= 1 день подписки VPN</span>
+            </div>
+            <div class="exchange-form">
+                <label for="coinAmount">Введите количество монеток:</label>
+                <div class="input-group">
+                    <input type="number" id="coinAmount" name="coinAmount" min="30" value="30" />
+                    <img src="images/monetka.png" class="coin-icon" alt="Monetka" />
+                </div>
+                <button id="exchangeButton" class="exchange-button">Обменять</button>
+            </div>
+            <div id="exchangeMessage" class="exchange-message hidden"></div>
         </div>
         
         <!-- Horizontal Bottom Menu -->

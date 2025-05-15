@@ -259,3 +259,100 @@ async function loadUserRecord() {
         console.error('Error loading record:', error);
     }
 }
+
+// Добавим в конец файла
+document.addEventListener('DOMContentLoaded', () => {
+    const exchangeButton = document.getElementById('exchangeButton');
+    const coinAmountInput = document.getElementById('coinAmount');
+    const exchangeMessage = document.getElementById('exchangeMessage');
+    
+    if (exchangeButton) {
+        exchangeButton.addEventListener('click', handleExchange);
+    }
+    
+    if (coinAmountInput) {
+        coinAmountInput.addEventListener('input', validateCoinAmount);
+    }
+});
+
+function validateCoinAmount() {
+    const input = document.getElementById('coinAmount');
+    const exchangeButton = document.getElementById('exchangeButton');
+    const minCoins = 30;
+    
+    if (input.value < minCoins) {
+        input.value = minCoins;
+    }
+    
+    // Можно добавить проверку на максимальное количество монет у пользователя
+}
+
+async function handleExchange() {
+    const exchangeButton = document.getElementById('exchangeButton');
+    const coinAmountInput = document.getElementById('coinAmount');
+    const exchangeMessage = document.getElementById('exchangeMessage');
+    const coinCountElement = document.getElementById('coinCount');
+    
+    const coins = parseInt(coinAmountInput.value);
+    
+    if (isNaNcoins) {
+        showExchangeMessage('Введите корректное количество монет', 'error');
+        return;
+    }
+    
+    if (coins < 30) {
+        showExchangeMessage('Минимальная сумма обмена - 30 монет', 'error');
+        return;
+    }
+    
+    exchangeButton.classList.add('disabled');
+    exchangeButton.textContent = 'Обработка...';
+    
+    try {
+        const response = await fetch(`https://game.svoivpn.duckdns.org/exchange/${window.userId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(coins)
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(data.error || 'Ошибка при обмене');
+        }
+        
+        if (data.success) {
+            showExchangeMessage(
+                `Успешно! Получено ${data.days_added} дней подписки. Новый баланс: ${data.new_coin_balance} монет`,
+                'success'
+            );
+            coinCountElement.textContent = data.new_coin_balance;
+            
+            // Если остались неизрасходованные монеты
+            if (data.remaining_coins > 0) {
+                coinAmountInput.value = data.remaining_coins;
+            }
+        }
+    } catch (error) {
+        console.error('Exchange error:', error);
+        showExchangeMessage(error.message, 'error');
+    } finally {
+        exchangeButton.classList.remove('disabled');
+        exchangeButton.textContent = 'Обменять';
+    }
+}
+
+function showExchangeMessage(message, type) {
+    const exchangeMessage = document.getElementById('exchangeMessage');
+    if (!exchangeMessage) return;
+    
+    exchangeMessage.textContent = message;
+    exchangeMessage.className = 'exchange-message';
+    exchangeMessage.classList.add(type);
+    exchangeMessage.classList.remove('hidden');
+    
+    // Скрываем сообщение через 5 секунд
+    setTimeout(() => {
+        exchangeMessage.classList.add('hidden');
+    }, 5000);
+}
