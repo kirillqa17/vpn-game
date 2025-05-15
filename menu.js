@@ -281,7 +281,7 @@ async function handleExchange() {
     
     const coins = parseInt(coinAmountInput.value);
     
-    if (isNaNcoins) {
+    if (isNaN(coins)) {
         showExchangeMessage('Введите корректное количество монет', 'error');
         return;
     }
